@@ -18,7 +18,7 @@ jobs:
             context: "."
             dockerfilePath: "Dockerfile"
             buildStrategy: "auto"
-            imageRepository: "2folio/production"
+            imageRepository: "folio-demo/production"
             command: ""
     steps:
       - uses: actions/checkout@v4
@@ -35,7 +35,7 @@ jobs:
         id: build
         env:
           SERVICE_NAME: ${{ matrix.service.name }}
-          IMAGE_URI: registry.digitalocean.com/liftoff-87acfe95ee/${{ matrix.service.imageRepository }}:${{ github.sha }}
+          IMAGE_URI: registry.digitalocean.com/liftoff-8e905493fd/${{ matrix.service.imageRepository }}:${{ github.sha }}
           CONFIGURED_BUILD_STRATEGY: ${{ matrix.service.buildStrategy }}
           CONFIGURED_DOCKERFILE_PATH: ${{ matrix.service.dockerfilePath }}
           CONFIGURED_DOCKER_CONTEXT: ${{ matrix.service.context }}
@@ -147,11 +147,11 @@ jobs:
           fi
 
           PAYLOAD=$(cat <<JSONEOF
-          {"environmentId":"cmqlri35m006l1p5gyrozdy4v","serviceName":"$SERVICE_NAME","imageUri":"$IMAGE_URI","commitSha":"$GITHUB_SHA","status":"$JOB_STATUS","runUrl":"$RUN_URL","buildStrategy":"$BUILD_STRATEGY","buildPlan":$BUILD_PLAN_JSON,"buildLogsBase64":$BUILD_LOGS_JSON}
+          {"environmentId":"cmqlxjod2027cqvkmneynexxk","serviceName":"$SERVICE_NAME","imageUri":"$IMAGE_URI","commitSha":"$GITHUB_SHA","status":"$JOB_STATUS","runUrl":"$RUN_URL","buildStrategy":"$BUILD_STRATEGY","buildPlan":$BUILD_PLAN_JSON,"buildLogsBase64":$BUILD_LOGS_JSON}
           JSONEOF
           )
 
-          curl -X POST https://aniya-preservable-harriett.ngrok-free.dev/api/v1/webhooks/deploy-complete \
+          curl -X POST https://liftoff-api.niceplant-718b927b.uaenorth.azurecontainerapps.io/api/v1/webhooks/deploy-complete \
             -H "X-Liftoff-Secret: ${{ secrets.LIFTOFF_DEPLOY_SECRET }}" \
             -H "Content-Type: application/json" \
             -d "$PAYLOAD"
