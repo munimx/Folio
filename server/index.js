@@ -13,6 +13,8 @@ const rootDir = path.resolve(__dirname, '..')
 const distDir = path.join(rootDir, 'dist')
 const port = Number(process.env.PORT || 3000)
 const databaseUrl = process.env.DATABASE_URL || ''
+const pgConnectionTimeoutMs = Number(process.env.PG_CONNECTION_TIMEOUT_MS || 8000)
+const pgQueryTimeoutMs = Number(process.env.PG_QUERY_TIMEOUT_MS || 8000)
 
 function useSsl(connectionString) {
   if (!connectionString) return false
@@ -36,6 +38,8 @@ const pool = databaseUrl
       connectionString: databaseUrl,
       ssl: useSsl(databaseUrl),
       max: Number(process.env.PG_POOL_SIZE || 5),
+      connectionTimeoutMillis: pgConnectionTimeoutMs,
+      query_timeout: pgQueryTimeoutMs,
     })
   : null
 
@@ -179,6 +183,7 @@ app.get('/api/health', async (_req, res) => {
     await pool.query('SELECT 1')
     res.json({ ok: true, storage: 'postgres', postgres: true })
   } catch (error) {
+    console.error('Postgres health check failed:', error)
     res.status(503).json({
       ok: false,
       storage: 'postgres',
