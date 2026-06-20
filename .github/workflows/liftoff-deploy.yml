@@ -18,7 +18,7 @@ jobs:
             context: "."
             dockerfilePath: "Dockerfile"
             buildStrategy: "auto"
-            imageRepository: "folio/production"
+            imageRepository: "1folio/production"
             command: ""
     steps:
       - uses: actions/checkout@v4
@@ -35,7 +35,7 @@ jobs:
         id: build
         env:
           SERVICE_NAME: ${{ matrix.service.name }}
-          IMAGE_URI: registry.digitalocean.com/liftoff-2fbbfc828a/${{ matrix.service.imageRepository }}:${{ github.sha }}
+          IMAGE_URI: registry.digitalocean.com/liftoff-bfc4c25114/${{ matrix.service.imageRepository }}:${{ github.sha }}
           CONFIGURED_BUILD_STRATEGY: ${{ matrix.service.buildStrategy }}
           CONFIGURED_DOCKERFILE_PATH: ${{ matrix.service.dockerfilePath }}
           CONFIGURED_DOCKER_CONTEXT: ${{ matrix.service.context }}
@@ -147,7 +147,7 @@ jobs:
           fi
 
           PAYLOAD=$(cat <<JSONEOF
-          {"environmentId":"cmqlqxivf00071p5g2cmw86ny","serviceName":"$SERVICE_NAME","imageUri":"$IMAGE_URI","commitSha":"$GITHUB_SHA","status":"$JOB_STATUS","runUrl":"$RUN_URL","buildStrategy":"$BUILD_STRATEGY","buildPlan":$BUILD_PLAN_JSON,"buildLogsBase64":$BUILD_LOGS_JSON}
+          {"environmentId":"cmqlqzzco000m1p5gf8524486","serviceName":"$SERVICE_NAME","imageUri":"$IMAGE_URI","commitSha":"$GITHUB_SHA","status":"$JOB_STATUS","runUrl":"$RUN_URL","buildStrategy":"$BUILD_STRATEGY","buildPlan":$BUILD_PLAN_JSON,"buildLogsBase64":$BUILD_LOGS_JSON}
           JSONEOF
           )
 
